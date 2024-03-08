@@ -3,6 +3,12 @@ import turtle
 import random
 from PIL import Image, ImageTk
 
+# Set up the screen
+screen = turtle.Screen()
+screen.bgpic("ocean.jpg")
+screen.setup(width=800, height=600)
+screen.tracer(0)  # Turn off automatic screen updates
+
 # Initialize Tkinter
 root = tk.Tk()
 root.title("Blue Aquarium")
