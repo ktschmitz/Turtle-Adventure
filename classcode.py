@@ -6,6 +6,7 @@ import time
 screen = turtle.Screen()
 screen.title("Turtle Game")
 screen.bgcolor("white")
+screen.bgpic("ocean2.png")
 
 
 
