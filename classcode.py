@@ -1,82 +1,145 @@
 import turtle
 import random
-
-
+import time
 
 # Set up the screen
 screen = turtle.Screen()
-screen.bgpic("ocean.png")
-screen.setup(width=800, height=600)
-screen.tracer(0)  # Turn off automatic screen updates
-
-'''
-# Set up canvas
-canvas = tk.Canvas(root, width=800, height=600, bg="lightblue")
-canvas.pack()
-'''
+screen.title("Turtle Game")
+screen.bgcolor("white")
 
 
 
-#Create turtle
-turtle = turtle.Turtle()
-turtle.shape('turtle')
-turtle.fillcolor("green")
-turtle.penup()
-turtle.speed(0)
-turtle.goto(-350, 100)
+# Create the turtle player
+player = turtle.Turtle()
+player.shape("turtle")
+player.color("green")
+player.speed(0)
+player.penup()
+player.goto(0, 0)
 
-# Fish properties
-fishList = [
-    {
-        "x": 60,
-        "y": 300,
-        "size" : 60,
-        "speed" : random.randint(25, 75)/100,
-        "color": "orange"
-    },
-    {
-        "x": 60,
-        "y": 100,
-        "size" : 60,
-        "speed" : random.randint(25, 75)/100,
-        "color": "pink"
-    },
-    {
-        "x": 60,
-        "y": 500,
-        "size" : 60,
-        "speed" : random.randint(25, 75)/100,
-        "color": "yellow"
-    },
-]
+# Create a list to store fish turtles and their corresponding circles
+fish_list = []
+circle_list = []
 
-# Function to move the fish
-def move_fish(fish):
-    fish["x"] += fish["speed"]
-    if fish["x"] - fish["size"] >= 800:  # Reset fish position when it reaches the right edge
-        fish["x"] = - fish["size"]
+# Function to create a new fish
+def create_fish():
+    fish = turtle.Turtle()
+    fish.shape("circle")
+    fish.color(random.choice(["red", "orange", "yellow", "green", "blue", "purple"]))  # Random color
+    fish.speed(1)
+    fish.penup()
+    fish.goto(random.randint(-200, 375), random.randint(-200, 375))
 
+    # Create a corresponding circle
+    circle = turtle.Turtle()
+    circle.speed(0)
+    circle.shape("circle")
+    circle.color("white")
+    circle.shapesize(stretch_wid=0.6, stretch_len=0.6)  # Adjust size if needed
+    circle.penup()
+    circle.goto(fish.xcor(), fish.ycor())
 
+    fish_list.append(fish)
+    circle_list.append(circle)
 
+# Function to move the player turtle
+def move_up():
+    y = player.ycor()
+    y += 20
+    player.sety(y)
 
+def move_down():
+    y = player.ycor()
+    y -= 20
+    player.sety(y)
 
-'''
-# Draw the fish with eyes and a smile
-def draw_fish(x, y, size, color):
-    canvas.create_oval(x, y, x + size, y + size, fill=color)  # Body
-    canvas.create_polygon(x - size / 2 + 32, y + size / 2, x-36, y + size/ 5 - 1, x-36, y + size * 4 / 5 + 1, fill="black") # Tail Outline
-    canvas.create_polygon(x - size / 2 + 30, y + size / 2, x-35, y + size/ 5, x-35, y + size * 4 / 5, fill=color) # Tail Fill
-    canvas.create_oval(x + size / 4, y + size / 4, x + size / 4 + 5, y + size / 4 + 5, fill="black")  # Left eye
-    canvas.create_oval(x + size / 4 * 3, y + size / 4, x + size / 4 * 3 + 5, y + size / 4 + 5, fill="black")  # Right eye
-    canvas.create_arc(x + size / 4, y + size / 2, x + size / 4 * 3, y + size / 4 * 3, start=180, extent=180, style=tk.ARC)  # Smile
-'''
+def move_left():
+    x = player.xcor()
+    x -= 20
+    player.setx(x)
+
+def move_right():
+    x = player.xcor()
+    x += 20
+    player.setx(x)
+
+# Keyboard bindings
+screen.listen()
+screen.onkey(move_up, "Up")
+screen.onkey(move_down, "Down")
+screen.onkey(move_right, "Right")
+screen.onkey(move_left, "Left")
+
+# Create initial fish
+for _ in range(5):
+    create_fish()
+
+# Score variable
+score = 0
+
+# Scoreboard
+scoreboard = turtle.Turtle()
+scoreboard.speed(0)
+scoreboard.color("black")
+scoreboard.penup()
+scoreboard.hideturtle()
+scoreboard.goto(0, 260)
+scoreboard.write("Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+
+# Timer
+start_time = time.time()
+time_limit = 20  # in seconds
+
+# Main game loop
+while time.time() - start_time < time_limit:
+    remaining_time = int(time_limit - (time.time() - start_time))
     
+    for i in range(len(fish_list)):
+        fish = fish_list[i]
+        circle = circle_list[i]
 
-def draw_aquarium():
- # Draw the fish
-    for fish in fishList:
-        draw_fish(fish["x"], fish["y"], fish["size"], fish["color"])
+        # Move fish
+        fish.setx(fish.xcor() - 2)
+        circle.setx(fish.xcor())
+
+        # Check for collision with player
+        if player.distance(fish) < 20:
+            # Increase score
+            score += 1
+            scoreboard.clear()
+            scoreboard.write("Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+
+            # Remove fish and its circle from the screen
+            fish.hideturtle()
+            circle.hideturtle()
+            fish_list.remove(fish)
+            circle_list.remove(circle)
+
+            # Create a new fish
+            create_fish()
+
+        # Check if fish is out of screen and remove it
+        if fish.xcor() < -300:
+            fish.hideturtle()
+            circle.hideturtle()
+            fish_list.remove(fish)
+            circle_list.remove(circle)
+
+    # Update the timer display
+    scoreboard.clear()
+    scoreboard.write("Score: {}\nTime: {}s".format(score, remaining_time), align="center", font=("Courier", 24, "normal"))
+
+# Display final score
+final_score_display = turtle.Turtle()
+final_score_display.speed(0)
+final_score_display.color("black")
+final_score_display.penup()
+final_score_display.hideturtle()
+final_score_display.goto(0, 0)
+final_score_display.write("Game Over\nFinal Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+
+# Close the window when clicked
+turtle.done()
 
 
-screen.update()
-screen.mainloop()
+
