@@ -29,14 +29,14 @@ def create_fish():
     fish = turtle.Turtle()
     fish.shape("circle")
     fish.color(random.choice(["red", "orange", "yellow", "green", "blue", "purple"]))  # Random color
-    fish.speed(1)
+    fish.speed(2)
     fish.penup()
     fish.goto(random.randint(-100, 275), random.randint(-100, 175))
 
 
     # Create a corresponding circle
     circle = turtle.Turtle()
-    circle.speed(0)
+    circle.speed(2)
     circle.shape("circle")
     circle.color("white")
     circle.shapesize(stretch_wid=0.6, stretch_len=0.6)  # Adjust size if needed
