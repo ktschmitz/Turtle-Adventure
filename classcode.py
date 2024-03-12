@@ -23,12 +23,23 @@ player.goto(0, 0)
 fish_list = []
 circle_list = []
 
+# Dictionary to map colors to point values
+color_points = {
+    "red": 1,
+    "orange": 2,
+    "yellow": 3,
+    "green": 4,
+    "blue": 5,
+    "purple": 6
+}
+
 
 # Function to create a new fish
 def create_fish():
     fish = turtle.Turtle()
     fish.shape("circle")
-    fish.color(random.choice(["red", "orange", "yellow", "green", "blue", "purple"]))  # Random color
+    color = random.choice(list(color_points.keys()))
+    fish.color(color)
     fish.speed(2)
     fish.penup()
     fish.goto(random.randint(-100, 275), random.randint(-100, 175))
@@ -46,6 +57,8 @@ def create_fish():
 
     fish_list.append(fish)
     circle_list.append(circle)
+
+
 
 
 # Function to move the player turtle
@@ -80,6 +93,15 @@ screen.onkey(move_down, "Down")
 screen.onkey(move_right, "Right")
 screen.onkey(move_left, "Left")
 
+# Add key
+key = turtle.Turtle()
+key.speed(0)
+key.color("black")
+key.penup()
+key.hideturtle()
+key.goto(0, -350)
+key.write("Point Values\nRed: 1\nOrange: 2\nYellow: 3 \nGreen: 4\nBlue: 5\nPurple: 6", align="center", font=("Courier", 12, "normal"))
+
 
 # Create initial fish
 for _ in range(5):
@@ -96,7 +118,7 @@ scoreboard.speed(0)
 scoreboard.color("black")
 scoreboard.penup()
 scoreboard.hideturtle()
-scoreboard.goto(0, 260)
+scoreboard.goto(0, 200)
 scoreboard.write("Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
 
 
@@ -116,7 +138,8 @@ def update_fish_and_check_collisions():
         # Check for collision with player
         if player.distance(fish) < 20:
             # Increase score
-            score += 1
+            color = fish.color()[0]
+            score += color_points[color]
             # Instead of clearing and rewriting the scoreboard every time, do it once at the end of the game loop
             # Remove fish and its circle from the screen
             fish.hideturtle()
@@ -133,8 +156,6 @@ def update_fish_and_check_collisions():
             circle.hideturtle()
             fish_list.remove(fish)
             circle_list.remove(circle)
-
-
 
 
 # Main game loop
@@ -174,7 +195,12 @@ final_score_display.goto(0, 0)
 final_score_display.write("Game Over\nFinal Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
 
 
+
+
+
 # Close the window when clicked
 turtle.done()
+
+
 
 
