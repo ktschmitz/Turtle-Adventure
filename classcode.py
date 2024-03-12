@@ -100,7 +100,7 @@ key.color("black")
 key.penup()
 key.hideturtle()
 key.goto(0, -350)
-key.write("Point Values\nRed: 1\nOrange: 2\nYellow: 3 \nGreen: 4\nBlue: 5\nPurple: 6", align="center", font=("Courier", 12, "normal"))
+key.write("Point Values\nRed: 1\nOrange: 2\nYellow: 3 \nGreen: 4\nBlue: 5\nPurple: 6", align="center", font=("Calibri", 12, "normal"))
 
 
 # Create initial fish
@@ -119,7 +119,7 @@ scoreboard.color("black")
 scoreboard.penup()
 scoreboard.hideturtle()
 scoreboard.goto(0, 200)
-scoreboard.write("Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+scoreboard.write("Score: {}".format(score), align="center", font=("Calibri", 24, "normal"))
 
 
 # Timer
@@ -174,7 +174,7 @@ while time.time() - start_time < time_limit:
     if score != last_known_score or remaining_time != last_known_time:
         # Update the scoreboard
         scoreboard.clear()
-        scoreboard.write("Score: {}\nTime: {}s".format(score, remaining_time), align="center", font=("Courier", 24, "normal"))
+        scoreboard.write("Score: {}\nTime: {}s".format(score, remaining_time), align="center", font=("Calibri", 24, "normal"))
        
         # Update the tracking variables
         last_known_score = score
@@ -192,7 +192,7 @@ final_score_display.color("black")
 final_score_display.penup()
 final_score_display.hideturtle()
 final_score_display.goto(0, 0)
-final_score_display.write("Game Over\nFinal Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+final_score_display.write("Game Over\nFinal Score: {}".format(score), align="center", font=("Calibri", 24, "normal"))
 
 
 
@@ -200,6 +200,9 @@ final_score_display.write("Game Over\nFinal Score: {}".format(score), align="cen
 
 # Close the window when clicked
 turtle.done()
+
+
+
 
 
 
